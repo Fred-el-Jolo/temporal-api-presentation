@@ -5,12 +5,9 @@ theme: seriph
 # like them? see https://unsplash.com/collections/94734566/slidev
 background: https://cover.sli.dev
 # some information about your slides (markdown enabled)
-title: Welcome to Slidev
+title: Temporal
 info: |
-  ## Slidev Starter Template
-  Presentation slides for developers.
-
-  Learn more at [Sli.dev](https://sli.dev)
+  Temporal usage in april 2025
 # apply unocss classes to the current slide
 class: text-center
 # https://sli.dev/features/drawing
@@ -22,12 +19,15 @@ transition: slide-left
 mdc: true
 ---
 
-# Welcome to Slidev
+# Temporal API
 
-Presentation slides for developers
+La gestion des dates du futur... sans attendre !!!
 
-<div @click="$slidev.nav.next" class="mt-12 py-1" hover:bg="white op-10">
-  Press Space for next page <carbon:arrow-right />
+<div class="abs-bl m-6 text-xl">
+  <span>Fred Guillaume</span>
+  <a href="https://github.com/slidevjs/slidev" target="_blank" class="slidev-icon-btn">
+    <carbon:logo-github />
+  </a>
 </div>
 
 <div class="abs-br m-6 text-xl">
@@ -353,7 +353,7 @@ This shows up when you click the slide:
 
 The <span v-mark.red="3"><code>v-mark</code> directive</span>
 also allows you to add
-<span v-mark.circle.orange="4">inline marks</span>
+<span v-mark.circle.orange="4">inlinee marks</span>
 , powered by [Rough Notation](https://roughnotation.com/):
 
 ```html
@@ -551,7 +551,7 @@ Learn more: [Mermaid Diagrams](https://sli.dev/features/mermaid) and [PlantUML D
 ---
 foo: bar
 dragPos:
-  square: 691,32,167,_,-16
+  square: 713,43,167,_,-16
 ---
 
 # Draggable Elements
@@ -577,7 +577,7 @@ Double-click on the draggable elements to edit their positions.
 </v-drag>
 ```
 
-<v-drag pos="663,206,261,_,-15">
+<v-drag pos="368,487,261,_,8">
   <div text-center text-3xl border border-main rounded>
     Double-click me!
   </div>
@@ -591,7 +591,7 @@ Double-click on the draggable elements to edit their positions.
 <v-drag-arrow two-way />
 ```
 
-<v-drag-arrow pos="67,452,253,46" two-way op70 />
+<v-drag-arrow pos="261,141,382,23" two-way op70 />
 
 ---
 src: ./pages/imported-slides.md
