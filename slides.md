@@ -25,8 +25,11 @@ La gestion des dates du futur... sans attendre !!!
 
 <div class="abs-bl m-6 text-xl">
   <span>Fred Guillaume</span>
-  <a href="https://github.com/slidevjs/slidev" target="_blank" class="slidev-icon-btn">
+  <a href="https://github.com/Fred-el-Jolo/" target="_blank" class="slidev-icon-btn">
     <carbon:logo-github />
+  </a>
+  <a href="https://www.linkedin.com/in/fredericguillaume/" target="_blank" class="slidev-icon-btn">
+    <carbon:logo-linkedin />
   </a>
 </div>
 
@@ -34,9 +37,6 @@ La gestion des dates du futur... sans attendre !!!
   <button @click="$slidev.nav.openInEditor" title="Open in Editor" class="slidev-icon-btn">
     <carbon:edit />
   </button>
-  <a href="https://github.com/slidevjs/slidev" target="_blank" class="slidev-icon-btn">
-    <carbon:logo-github />
-  </a>
 </div>
 
 <!--
@@ -47,28 +47,71 @@ The last comment block of each slide will be treated as slide notes. It will be 
 transition: fade-out
 ---
 
-# What is Slidev?
+# Le temps, qu'est ce c'est ?
+Mesure de durées, qui nous impacte dans notre vie de tous les jours.
+Notre expérience quotidienne du temps nous semble simple, mais reste une expérience très locale et culturelle 
 
-Slidev is a slides maker and presenter designed for developers, consist of the following features
+# Comment mesurer le temps ?
+- En se basant sur des phénomènes périodiques (jour, nuit, saisons etc...) ou quantiques (atomes de quartz, de césium...)
 
-- 📝 **Text-based** - focus on the content with Markdown, and then style them later
-- 🎨 **Themable** - themes can be shared and re-used as npm packages
-- 🧑‍💻 **Developer Friendly** - code highlighting, live coding with autocompletion
-- 🤹 **Interactive** - embed Vue components to enhance your expressions
-- 🎥 **Recording** - built-in recording and camera view
-- 📤 **Portable** - export to PDF, PPTX, PNGs, or even a hostable SPA
-- 🛠 **Hackable** - virtually anything that's possible on a webpage is possible in Slidev
-<br>
-<br>
+# Pourquoi c'est important ?
+- Il suffit d'échanger avec des personnes sur d'autres fuseaux horaires pour se rendre compte de la complexité de la gestion du temps
+- Synchroniser des systèmes est primordial pour la cohérence des données
 
-Read more about [Why Slidev?](https://sli.dev/guide/why)
+---
+transition: fade-out
+---
+
+# TAI, UT & UTC
+- TAI (Temps Atomique International): basé sur les atomes de césium
+> La seconde est la durée exacte de 9 192 631 770 oscillations (ou périodes) de la transition entre les niveaux hyperfins de l’état fondamental de l’atome de 133Cs (atome au repos T=0K).
+
+- UT1 (Universal Time): basé sur l'observation d'objets celestes vis à vis de la rotation de la terre. Irrégulier.
+- UTC (Coordinated Universal Time): Du fait de ses irrégularités, UT1 différe progressivement de TAI. Afin de garder une consistence entre les deux, UTC a été introduite.
+
+Elle consiste à ajouter / supprimer des "secondes intercalaires au TAI pour rester à moins de 0.9s de UT1.
+
+---
+transition: fade-out
+---
+
+# JS Date
+- une date est forcément associée à une heure (et un timestamp)
+- une date est soit définie dans le fuseau horaire (=timezone) de l'utilisateur, soit en UTC
+- L'objet Date est mutable
+
+```ts {monaco-run}
+// Date constructors
+console.log(new Date())                       // Empty constructor = now
+console.log(new Date(1745339400000));         // Constructor with unix timestamp
+console.log(new Date('1970-01-01'));          // UTC
+console.log(new Date('1970-01-01T00:00:00')); // Local timezone
+```
+
+---
+transition: fade-out
+---
+
+# JS Date
+
+```ts {monaco-run}
+// Getter & setters: local vs UTC
+const rightNow = new Date('2024-12-31T23:00:00Z');
+console.log(`year  local: ${rightNow.getFullYear()} utc: ${rightNow.getUTCFullYear()}`);
+console.log(`month local: ${rightNow.getMonth()}    utc: ${rightNow.getUTCMonth()}`);
+console.log(`day   local: ${rightNow.getDate()}     utc: ${rightNow.getUTCDate()}`);
+console.log(`hours local: ${rightNow.getHours()}    utc: ${rightNow.getUTCHours()}`);
+```
+
 
 <!--
+
+
 You can have `style` tag in markdown to override the style for the current page.
 Learn more: https://sli.dev/features/slide-scope-style
 -->
 
-<style>
+<!--style>
 h1 {
   background-color: #2B90B6;
   background-image: linear-gradient(45deg, #4EC5D4 10%, #146b8c 20%);
@@ -78,10 +121,24 @@ h1 {
   -webkit-text-fill-color: transparent;
   -moz-text-fill-color: transparent;
 }
-</style>
+</style-->
 
 <!--
-Here is another comment.
+TAI: Temps Atomique International
+UT: Universal Time
+UTC: Coordinated Universal Time
+# JS date issues:
+
+- It doesn’t support Dates but only Datetimes (all date objects are unix timestamps).
+- It doesn’t support time zones other than the user’s local time and UTC.
+- The parser’s behaviour is inconsistent from one platform to another.
+- The Date object is mutable.
+- The behaviour of daylight saving time is unpredictable.
+- No support for non-Gregorian calendars.
+- No date arithmetic like add or subtract time.
+https://medium.com/@raphael.moutard/handling-dates-in-javascript-the-wrong-way-d98cb2835200
+https://medium.com/@raphael.moutard/why-programmers-are-so-bad-at-handling-time-part-1-01da6b50c141
+https://medium.com/@raphael.moutard/why-programmers-are-so-bad-at-handling-time-part-2-b21aff190bfe
 -->
 
 ---
