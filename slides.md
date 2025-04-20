@@ -75,18 +75,123 @@ Elle consiste à ajouter / supprimer des "secondes intercalaires au TAI pour res
 transition: fade-out
 ---
 
-# JS Date
+# JS Date (1/)
 - une date est forcément associée à une heure (et un timestamp)
 - une date est soit définie dans le fuseau horaire (=timezone) de l'utilisateur, soit en UTC
-- L'objet Date est mutable
+- Offset
+   - `Z`: UTC
+   - `+HH:mm`: décalage avec l'UTC en heures & minutes
+
 
 ```ts {monaco-run}
 // Date constructors
-console.log(new Date())                       // Empty constructor = now
-console.log(new Date(1745339400000));         // Constructor with unix timestamp
-console.log(new Date('1970-01-01'));          // UTC
-console.log(new Date('1970-01-01T00:00:00')); // Local timezone
+console.log(new Date())                             // Empty constructor = now
+console.log(new Date(1745339400000));               // Constructor with unix timestamp
+console.log(new Date('1970-01-01'));                // UTC
+console.log(new Date('1970-01-01T00:00:00'));       // Local timezone
+console.log(new Date('1970-01-01T00:00:00-05:00')); // -5h offset
 ```
+
+---
+transition: fade-out
+---
+
+# JS Date (2/)
+
+<DateAPI input="2024-12-31T23:00:00Z" />
+
+<!-- 
+// Getter & setters: local vs UTC
+const nye = new Date('2024-12-31T23:00:00Z');
+console.log(`year  local: ${nye.getFullYear()} utc: ${nye.getUTCFullYear()}`);
+console.log(`month local: ${nye.getMonth()}    utc: ${nye.getUTCMonth()}`);
+console.log(`day   local: ${nye.getDate()}     utc: ${nye.getUTCDate()}`);
+console.log(`hours local: ${nye.getHours()}    utc: ${nye.getUTCHours()}`);
+-->
+
+
+---
+transition: fade-out
+---
+
+# JS Date - outputs (3/)
+ISO String
+Date string
+Time string
+Locale date string
+Locale time string
+Locale string
+UTC String
+
+
+
+---
+transition: fade-out
+---
+
+# JS Date - common issues (4/)
+The TimezoneOffset trap !!! 
+Day of week VS day of month
+Months range
+
+Immutable
+Date arithmetics
+Support of non gregorian calendars
+
+Ex: horloge multi pays
+instance 1 date, + offset, - offset
+
+
+---
+transition: fade-out
+---
+
+# Solution #01: use libraries
+
+
+
+---
+transition: fade-out
+---
+
+# Solution #02: temporal API
+
+
+---
+transition: fade-out
+---
+
+# Pbs Date API
+
+
+---
+transition: fade-out
+---
+
+# Pbs Date API
+
+
+
+---
+transition: fade-out
+---
+
+
+
+# TODO
+
+- horloge synchro pays
+  - heure été / hiver
+  - computing week number
+  - first day of year
+
+
+- Planif dates multi fuseau horaire
+  - 
+
+
+
+
 
 ---
 transition: fade-out
@@ -94,14 +199,11 @@ transition: fade-out
 
 # JS Date
 
-```ts {monaco-run}
-// Getter & setters: local vs UTC
-const rightNow = new Date('2024-12-31T23:00:00Z');
-console.log(`year  local: ${rightNow.getFullYear()} utc: ${rightNow.getUTCFullYear()}`);
-console.log(`month local: ${rightNow.getMonth()}    utc: ${rightNow.getUTCMonth()}`);
-console.log(`day   local: ${rightNow.getDate()}     utc: ${rightNow.getUTCDate()}`);
-console.log(`hours local: ${rightNow.getHours()}    utc: ${rightNow.getUTCHours()}`);
-```
+---
+transition: fade-out
+---
+
+# Status TC 39 Temporal
 
 
 <!--
@@ -608,7 +710,7 @@ Learn more: [Mermaid Diagrams](https://sli.dev/features/mermaid) and [PlantUML D
 ---
 foo: bar
 dragPos:
-  square: 713,43,167,_,-16
+  square: 0,-125,0,0
 ---
 
 # Draggable Elements
