@@ -47,16 +47,29 @@ The last comment block of each slide will be treated as slide notes. It will be 
 transition: fade-out
 ---
 
+# TODO !!!
+1. KAHOOT Questions
+2. CSS Style everywhere
+3. Common issues => hide structured clone
+4. Icones pour les refs
+
+---
+transition: fade-out
+---
+
 # Le temps, qu'est ce c'est ?
-Mesure de durées, qui nous impacte dans notre vie de tous les jours.
-Notre expérience quotidienne du temps nous semble simple, mais reste une expérience très locale et culturelle 
+Mesure de durées, planification d'événements qui rythme notre vie quotidienne.
+
+Notre expérience quotidienne du temps nous semble simple, avec une approche intuitive.
+
+Mais cela reste une expérience très locale, culturelle et même parfois avec sa dose de politique ; et donc compliquée à généraliser...
 
 # Comment mesurer le temps ?
 - En se basant sur des phénomènes périodiques (jour, nuit, saisons etc...) ou quantiques (atomes de quartz, de césium...)
 
 # Pourquoi c'est important ?
-- Il suffit d'échanger avec des personnes sur d'autres fuseaux horaires pour se rendre compte de la complexité de la gestion du temps
 - Synchroniser des systèmes est primordial pour la cohérence des données
+- Il suffit d'échanger avec des personnes sur d'autres fuseaux horaires pour se rendre compte de la complexité de la gestion du temps
 
 ---
 transition: fade-out
@@ -67,115 +80,93 @@ transition: fade-out
 > La seconde est la durée exacte de 9 192 631 770 oscillations (ou périodes) de la transition entre les niveaux hyperfins de l’état fondamental de l’atome de 133Cs (atome au repos T=0K).
 
 - UT1 (Universal Time): basé sur l'observation d'objets celestes vis à vis de la rotation de la terre. Irrégulier.
-- UTC (Coordinated Universal Time): Du fait de ses irrégularités, UT1 différe progressivement de TAI. Afin de garder une consistence entre les deux, UTC a été introduite.
+- UTC (Coordinated Universal Time): Du fait de ses irrégularités, UT1 différe progressivement de TAI.
+
+Afin de garder une consistence entre les deux, UTC a été introduite.
+
 Elle consiste à ajouter / supprimer des "secondes intercalaires au TAI pour rester à moins de 0.9s de UT1.
-- DSL (Daylight saving time): Heure d'été / heure d'hiver
+- DST (Daylight saving time): Heure d'été / heure d'hiver.
 
 ---
 transition: fade-out
 ---
 
-# JS Date - constructor (1/)
+# Fuseaux horaires
+
+<img src="/aus-tz.png" width="400"/>
+
+<img src="/paris-sydney-offset.png" width="400" title="https://partir.ouest-france.fr/australie/villes/sydney/heure" />
+
+---
+transition: fade-out
+---
+
+# IANA TZ DB - Secondes intercalaires (Leap seconds)
+https://www.iana.org/time-zones
+
+<<< @/snippets/leap-seconds.txt#snippet
+
+---
+transition: fade-out
+---
+
+# IANA TZ DB - évolution du fuseau horaire en France
+https://www.iana.org/time-zones
+
+<<< @/snippets/europe.txt#snippet
+
+
+---
+transition: fade-out
+---
+
+# JS Date
+Le JS a été créé dans la précipitation, et la gestion des dates n'y a pas coupé: l'implémentation JS créée en 1997 était une copie de l'implem `java.util.Date` [\[ref\]](https://developer.mozilla.org/en-US/blog/javascript-temporal-is-coming/#what_is_javascript_temporal)
+
+Ces comportements rigides et non adaptés à une gestion des dates moderne sont compliqués à gérer
 - une date est forcément associée à une heure (et un timestamp)
 - une date est soit définie dans le fuseau horaire (=timezone) de l'utilisateur, soit en UTC
-- Offset
-   - `Z`: UTC
-   - `+HH:mm`: décalage avec l'UTC en heures & minutes
-
-
-```ts {monaco-run}
-// Date constructors
-console.log(new Date())                             // Empty constructor = now
-console.log(new Date(1745346600000));               // Constructor with unix timestamp
-console.log(new Date('1970-01-01'));                // UTC
-// Datetime constructors
-console.log(new Date('1970-01-01T00:00:00'));       // Local timezone
-console.log(new Date('1970-01-01T10:00:00Z'));       // UTC
-console.log(new Date('1970-01-01T00:00:00-05:00')); // -5h offset
-```
+- Pas de support de calendriers non-grégoriens
+- une date est mutable
+- Les opérations sur les dates et les conversions vers d'autres timezone sont très compliquées à réaliser
 
 ---
 transition: fade-out
 ---
 
-# JS Date - getters (& setters) (2/)
 
-<DateAPI input="2024-12-31T23:00:00Z" />
-
-<!-- 
-// Getter & setters: local vs UTC
-const nye = new Date('2024-12-31T23:00:00Z');
-console.log(`year  local: ${nye.getFullYear()} utc: ${nye.getUTCFullYear()}`);
-console.log(`month local: ${nye.getMonth()}    utc: ${nye.getUTCMonth()}`);
-console.log(`day   local: ${nye.getDate()}     utc: ${nye.getUTCDate()}`);
-console.log(`hours local: ${nye.getHours()}    utc: ${nye.getUTCHours()}`);
--->
-
-
----
-transition: fade-out
----
-
-# JS Date - outputs (3/)
-ISO String
-Date string
-Time string
-Locale date string
-Locale time string
-Locale string
-UTC String
-
-```ts {monaco}
-// Output format
-const now = new Date('2025-04-22T18:30:00');
-console.log(now.toDateString());          // Tue Apr 22 2025
-console.log(now.toISOString());           // 2025-04-22T16:30:00.000Z
-console.log(now.toJSON());                // 2025-04-22T16:30:00.000Z
-console.log(now.toLocaleDateString());    // 22/04/2025
-console.log(now.toLocaleString());        // 22/04/2025 18:30:00
-console.log(now.toLocaleString("en-US")); // 4/22/2025, 6:30:00 PM
-console.log(now.toLocaleString("en-US", {timeZone: "UTC"}));  // 4/22/2025, 4:30:00 PM
-console.log(now.toLocaleTimeString());    // 18:30:00
-console.log(now.toString());              // Tue Apr 22 2025 18:30:00 GMT+0200 (heure d’été d’Europe centrale)
-console.log(now.toTimeString());          // 18:30:00 GMT+0200 (heure d’été d’Europe centrale)
-console.log(now.toUTCString());           // Tue, 22 Apr 2025 16:30:00 GMT
-```
-
-
----
-transition: fade-out
----
-
-# JS Date - common issues (4/)
-
-The TimezoneOffset trap !!! 
-Day of week VS day of month
-Months range
+# JS Date issues (1/2)
 
 ```ts {monaco-run}
 // Output format
 const jsSophia = new Date('2025-04-22T18:30:00');
-console.log(jsSophia.getTimezoneOffset());
 
-console.log(jsSophia.getDay());
-console.log(jsSophia.getDate());
+// 1.
+// getTimezoneOffset is date-value independant !!!
+console.log('getTimezoneOffset on 2 different dates', jsSophia.getTimezoneOffset() === new Date().getTimezoneOffset());
 
-console.log(jsSophia.getMonth());
+// 2.
+// Weird APIs
+console.log('getDay()', jsSophia.getDay());     // Day of week
+console.log('getDate()', jsSophia.getDate());   // Day of month
+
+// 3.
+console.log('getMonth()', jsSophia.getMonth()); // Starts at 0
 ```
 
 ---
 transition: fade-out
 ---
 
-# JS Date - common issues (5/)
-
-Mutable date
-Date arithmetics
+# JS Date issues (2/2)
 
 ```ts {monaco-run}
+// 1.a
 const addTwoMonths = (date) => {
-  //const clone = structuredClone(date);
-  return new Date(date.setMonth(date.getMonth() + 2));
+  // 1.b
+  //TODO hide this !!!! const clone = structuredClone(date);
+  const clone = structuredClone(date);
+  return new Date(clone.setMonth(date.getMonth() + 2));
 }
 
 // Output format
@@ -183,17 +174,13 @@ const jsSophia13 = new Date('2025-04-22T18:30:00');
 const jsSophia14 = addTwoMonths(jsSophia13);
 console.log(jsSophia13, jsSophia14);
 
-const december2025 = new Date('2025-12-24');
-const february2026 =addTwoMonths(december2025);
-console.log(december2025, february2026);
+// 2.
+// Convert to another tz => date, not string
+const jsSophia = new Date('2025-04-22T18:30:00');
+const jsSophiaInNY = jsSophia.toLocaleString('en-US', {timeZone: 'America/New_York'});
+console.log(jsSophiaInNY);
+console.log(new Date(jsSophiaInNY));
 ```
-
-
-
-Support of non gregorian calendars
-
-Ex: horloge multi pays
-instance 1 date, + offset, - offset
 
 
 ---
@@ -201,14 +188,46 @@ transition: fade-out
 ---
 
 # Solution #01: use libraries (date-fns, moment...)
+## Intl-based Libraries
+- Luxon (successor of Moment.js)
+- date-fns-tz (extension for date-fns)
+- Day.js (when using its Timezone plugin)
 
+## Non-Intl Libraries (include their time zone data)
+- js-joda/timezone (extension for js-joda)
+- moment-timezone* (extension for Moment.js)
+- date-fns-timezone (extension for older 1.x of date-fns)
+- BigEasy/TimeZone
+- tz.js
 
+Mais... si on regardait ce qui arrive en standard ?
 
 ---
 transition: fade-out
 ---
 
 # Solution #02: temporal API
+Temporal API... ou le proposal toujours dans le pipe, mais qui ne sort jamais...
+- Repo lancé en 2017
+- Atteint le stage 3 du TC39 en mars 2021
+- Activé sur Firefox 139 (nightly) le 10 avril 2025 !!! [\[ref\]](https://bugzilla.mozilla.org/show_bug.cgi?id=1912511#[object%20HTMLDivElement])
+
+Hmmm... Mais alors, on va attendre encore pour basculer sur l'API ?
+
+[Temporal github repo](https://github.com/tc39/proposal-temporal)
+"Dev-ready" polyfills dispos, à utiliser avec précaution en prod...
+
+---
+transition: fade-out
+---
+
+# [fullcalendar/temporal-polyfill](https://github.com/fullcalendar/temporal-polyfill)
+
+---
+transition: fade-out
+---
+
+# Architecture Temporal API
 L'API temporal gère plusieurs aspect du temps de manière séparée, sur des namespaces dédiés:
 - Le calcul de durée `Temporal.Duration`
 - La représentation d'un instant donné dans le temps
@@ -217,15 +236,51 @@ L'API temporal gère plusieurs aspect du temps de manière séparée, sur des na
 - La représentation des différentes composantes d'une date & heure sans timezone ("wall clock")
   - `Temporal.PlainDateTime`
   - `Temporal.PlainDate`
-  - `Temporal.PlainMonthDay`
   - `Temporal.PlainTime`
+  - `Temporal.PlainMonthDay`
+  - `Temporal.PlainYearMonth`
 
 
 ---
 transition: fade-out
 ---
 
-# Pbs Date API
+<img src="/object-model.svg"  width=400/>
+
+<!--
+# Calendars in temporal
+https://tc39.es/proposal-temporal/docs/calendar-review.html
+- less business centric, in-browser use cases where non ISO calendar more & more used
+- emerging markets
+- dev burden (i18n require platform & library support)
+-->
+
+---
+transition: fade-out
+---
+
+<img src="/persistence-model.svg"  width=400/>
+
+---
+transition: fade-out
+---
+
+# Temporal Duration
+Les durées temporal peuvent être sérialisées via le format ISO 8601
+`±P nY nM nW nD T nH nM nS`
+
+- Durées calendaires: année, mois, semaine
+  - Non-portables
+- Durées non-calendaires: heure, minute, seconde...
+  - Portable, indépendantes du calendrier
+
+- Les méthodes `round()`, `total()`, `compare()` acceptent une option `relativeTo` afin de fournir les infos nécessaires à l'affichage de durée calendaires.
+
+---
+transition: fade-out
+---
+
+# Temporal playground
 
 
 ```ts {monaco-run}
@@ -233,8 +288,12 @@ import { Temporal } from 'temporal-polyfill';
 
 //console.log(Temporal.Now.zonedDateTimeISO().toString());
 
+const jsSophia11 = Temporal.ZonedDateTime.from(
+  "2022-10-11T18:30:00[Europe/Paris]",
+);
+
 const jsSophia12 = Temporal.ZonedDateTime.from(
-  "2023-06-15T18:35:48[Europe/Paris]",
+  "2023-06-15T18:30:00[Europe/Paris]",
 );
 
 const jsSophia13 = Temporal.ZonedDateTime.from(
@@ -266,9 +325,10 @@ const newZDT = zdt.withCalendar("islamic-umalqura");
 
 ---
 transition: fade-out
+layout: end
 ---
 
-# Pbs Date API
+# Questions ?
 
 
 
@@ -299,11 +359,7 @@ transition: fade-out
 
 # JS Date
 
----
-transition: fade-out
----
 
-# Status TC 39 Temporal
 
 
 <!--
@@ -393,7 +449,45 @@ https://tc39.es/proposal-temporal/docs/
 Calcul entre sessions js sophia
 
 
+
+// Getter & setters: local vs UTC
+const nye = new Date('2024-12-31T23:00:00Z');
+console.log(`year  local: ${nye.getFullYear()} utc: ${nye.getUTCFullYear()}`);
+console.log(`month local: ${nye.getMonth()}    utc: ${nye.getUTCMonth()}`);
+console.log(`day   local: ${nye.getDate()}     utc: ${nye.getUTCDate()}`);
+console.log(`hours local: ${nye.getHours()}    utc: ${nye.getUTCHours()}`);
+
+
+Intl-based Libraries
+
+New development should choose from one of these implementations, which rely on the Intl API for their time zone data:
+
+    Luxon (successor of Moment.js)
+    date-fns-tz (extension for date-fns)
+    Day.js (when using its Timezone plugin)
+
+Non-Intl Libraries
+
+These libraries are maintained, but carry the burden of packaging their own time zone data, which can be quite large.
+
+    js-joda/timezone (extension for js-joda)
+    moment-timezone* (extension for Moment.js)
+    date-fns-timezone (extension for older 1.x of date-fns)
+    BigEasy/TimeZone
+    tz.js
+
+
+
+
+# Calendars in temporal
+https://tc39.es/proposal-temporal/docs/calendar-review.html
+- less business centric, in-browser use cases where non ISO calendar more & more used
+- emerging markets
+- dev burden (i18n require platform & library support)
+
 -->
+
+
 
 ---
 transition: slide-up
@@ -862,7 +956,7 @@ Learn more: [Mermaid Diagrams](https://sli.dev/features/mermaid) and [PlantUML D
 ---
 foo: bar
 dragPos:
-  square: 0,-125,0,0
+  square: -55,0,0,0
 ---
 
 # Draggable Elements
