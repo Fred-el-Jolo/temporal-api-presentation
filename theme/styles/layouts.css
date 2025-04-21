@@ -1,5 +1,6 @@
 :root {
   --slidev-theme-primary: #5d8392;
+  /*--slidev-theme-primary: hsl(36, 100%, 55%);*/
 }
 
 .slidev-layout {
@@ -8,7 +9,7 @@
   }
 
   h1 + p {
-    @apply -mt-2 opacity-50 mb-4;
+    @apply -mt-2 mb-4;
   }
 
   p + h2, ul + h2, table + h2 {
