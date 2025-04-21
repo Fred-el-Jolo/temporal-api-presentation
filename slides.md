@@ -1,6 +1,6 @@
 ---
 # You can also start simply with 'default'
-theme: seriph
+theme: ./theme
 # random image from a curated Unsplash collection by Anthony
 # like them? see https://unsplash.com/collections/94734566/slidev
 background: https://cover.sli.dev
@@ -153,7 +153,11 @@ transition: fade-out
 # JS Date
 Le JS a été créé dans la précipitation, et la gestion des dates n'y a pas coupé: l'implémentation JS créée en 1997 était une copie de l'implem `java.util.Date` [\[ref\]](https://developer.mozilla.org/en-US/blog/javascript-temporal-is-coming/#what_is_javascript_temporal)
 
+<v-click>
+
 Ces comportements rigides et non adaptés à une gestion des dates moderne sont compliqués à gérer
+
+</v-click>
 
 <v-clicks>
 
