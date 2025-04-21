@@ -62,20 +62,20 @@ Notre expérience quotidienne du temps nous semble simple, mais reste une expér
 transition: fade-out
 ---
 
-# TAI, UT & UTC
+# TAI, UT, UTC, DLS
 - TAI (Temps Atomique International): basé sur les atomes de césium
 > La seconde est la durée exacte de 9 192 631 770 oscillations (ou périodes) de la transition entre les niveaux hyperfins de l’état fondamental de l’atome de 133Cs (atome au repos T=0K).
 
 - UT1 (Universal Time): basé sur l'observation d'objets celestes vis à vis de la rotation de la terre. Irrégulier.
 - UTC (Coordinated Universal Time): Du fait de ses irrégularités, UT1 différe progressivement de TAI. Afin de garder une consistence entre les deux, UTC a été introduite.
-
 Elle consiste à ajouter / supprimer des "secondes intercalaires au TAI pour rester à moins de 0.9s de UT1.
+- DSL (Daylight saving time): Heure d'été / heure d'hiver
 
 ---
 transition: fade-out
 ---
 
-# JS Date (1/)
+# JS Date - constructor (1/)
 - une date est forcément associée à une heure (et un timestamp)
 - une date est soit définie dans le fuseau horaire (=timezone) de l'utilisateur, soit en UTC
 - Offset
@@ -86,9 +86,11 @@ transition: fade-out
 ```ts {monaco-run}
 // Date constructors
 console.log(new Date())                             // Empty constructor = now
-console.log(new Date(1745339400000));               // Constructor with unix timestamp
+console.log(new Date(1745346600000));               // Constructor with unix timestamp
 console.log(new Date('1970-01-01'));                // UTC
+// Datetime constructors
 console.log(new Date('1970-01-01T00:00:00'));       // Local timezone
+console.log(new Date('1970-01-01T10:00:00Z'));       // UTC
 console.log(new Date('1970-01-01T00:00:00-05:00')); // -5h offset
 ```
 
@@ -96,7 +98,7 @@ console.log(new Date('1970-01-01T00:00:00-05:00')); // -5h offset
 transition: fade-out
 ---
 
-# JS Date (2/)
+# JS Date - getters (& setters) (2/)
 
 <DateAPI input="2024-12-31T23:00:00Z" />
 
@@ -123,6 +125,21 @@ Locale time string
 Locale string
 UTC String
 
+```ts {monaco}
+// Output format
+const now = new Date('2025-04-22T18:30:00');
+console.log(now.toDateString());          // Tue Apr 22 2025
+console.log(now.toISOString());           // 2025-04-22T16:30:00.000Z
+console.log(now.toJSON());                // 2025-04-22T16:30:00.000Z
+console.log(now.toLocaleDateString());    // 22/04/2025
+console.log(now.toLocaleString());        // 22/04/2025 18:30:00
+console.log(now.toLocaleString("en-US")); // 4/22/2025, 6:30:00 PM
+console.log(now.toLocaleString("en-US", {timeZone: "UTC"}));  // 4/22/2025, 4:30:00 PM
+console.log(now.toLocaleTimeString());    // 18:30:00
+console.log(now.toString());              // Tue Apr 22 2025 18:30:00 GMT+0200 (heure d’été d’Europe centrale)
+console.log(now.toTimeString());          // 18:30:00 GMT+0200 (heure d’été d’Europe centrale)
+console.log(now.toUTCString());           // Tue, 22 Apr 2025 16:30:00 GMT
+```
 
 
 ---
@@ -130,12 +147,49 @@ transition: fade-out
 ---
 
 # JS Date - common issues (4/)
+
 The TimezoneOffset trap !!! 
 Day of week VS day of month
 Months range
 
-Immutable
+```ts {monaco-run}
+// Output format
+const jsSophia = new Date('2025-04-22T18:30:00');
+console.log(jsSophia.getTimezoneOffset());
+
+console.log(jsSophia.getDay());
+console.log(jsSophia.getDate());
+
+console.log(jsSophia.getMonth());
+```
+
+---
+transition: fade-out
+---
+
+# JS Date - common issues (5/)
+
+Mutable date
 Date arithmetics
+
+```ts {monaco-run}
+const addTwoMonths = (date) => {
+  //const clone = structuredClone(date);
+  return new Date(date.setMonth(date.getMonth() + 2));
+}
+
+// Output format
+const jsSophia13 = new Date('2025-04-22T18:30:00');
+const jsSophia14 = addTwoMonths(jsSophia13);
+console.log(jsSophia13, jsSophia14);
+
+const december2025 = new Date('2025-12-24');
+const february2026 =addTwoMonths(december2025);
+console.log(december2025, february2026);
+```
+
+
+
 Support of non gregorian calendars
 
 Ex: horloge multi pays
@@ -146,7 +200,7 @@ instance 1 date, + offset, - offset
 transition: fade-out
 ---
 
-# Solution #01: use libraries
+# Solution #01: use libraries (date-fns, moment...)
 
 
 
@@ -155,6 +209,16 @@ transition: fade-out
 ---
 
 # Solution #02: temporal API
+L'API temporal gère plusieurs aspect du temps de manière séparée, sur des namespaces dédiés:
+- Le calcul de durée `Temporal.Duration`
+- La représentation d'un instant donné dans le temps
+  - représentation "timestamp": `Temporal.Instant`
+  - représentation d'une date & heure combinés à une timezone `Temporal.ZonedDateTime`
+- La représentation des différentes composantes d'une date & heure sans timezone ("wall clock")
+  - `Temporal.PlainDateTime`
+  - `Temporal.PlainDate`
+  - `Temporal.PlainMonthDay`
+  - `Temporal.PlainTime`
 
 
 ---
@@ -163,6 +227,42 @@ transition: fade-out
 
 # Pbs Date API
 
+
+```ts {monaco-run}
+import { Temporal } from 'temporal-polyfill';
+
+//console.log(Temporal.Now.zonedDateTimeISO().toString());
+
+const jsSophia12 = Temporal.ZonedDateTime.from(
+  "2023-06-15T18:35:48[Europe/Paris]",
+);
+
+const jsSophia13 = Temporal.ZonedDateTime.from(
+  "2025-04-22T18:30:00[Europe/Paris]",
+);
+
+const jsSophia14 = jsSophia13.add(Temporal.Duration.from({months: 2}));
+
+const heureMeeting = Temporal.PlainDateTime.from(
+  "2023-06-15T10:00:00",
+);
+
+const heureMeetingParis = heureMeeting.toZonedDateTime('Europe/Paris');
+
+const heureMeetingNY = heureMeetingParis.withTimeZone('America/New_York');
+const heureMeetingUTC = heureMeetingParis.toInstant();
+
+//console.log(jsSophia13.since(jsSophia12).toLocaleString());
+//console.log(jsSophia13.since(jsSophia12).round({relativeTo: jsSophia13, smallestUnit: 'minute',  largestUnit: 'year'}).toLocaleString());
+//console.log(jsSophia14);
+console.log(heureMeetingParis.offset, heureMeetingNY.offset, heureMeetingUTC);
+
+const zdt = Temporal.ZonedDateTime.from(
+  "2021-07-01T12:34:56[America/New_York]",
+);
+const newZDT = zdt.withCalendar("islamic-umalqura");
+//console.log(newZDT.toLocaleString("en-US", { calendar: "islamic-umalqura" }));
+```
 
 ---
 transition: fade-out
@@ -241,6 +341,58 @@ UTC: Coordinated Universal Time
 https://medium.com/@raphael.moutard/handling-dates-in-javascript-the-wrong-way-d98cb2835200
 https://medium.com/@raphael.moutard/why-programmers-are-so-bad-at-handling-time-part-1-01da6b50c141
 https://medium.com/@raphael.moutard/why-programmers-are-so-bad-at-handling-time-part-2-b21aff190bfe
+
+
+# Perfs benchmark
+https://bryntum.com/blog/javascript-temporal-is-it-finally-here/
+
+
+https://developer.mozilla.org/en-US/blog/javascript-temporal-is-coming/
+=> browser status
+
+
+# TZ db, data & code
+https://data.iana.org/time-zones/tz-link.html
+https://www.iana.org/time-zones
+https://github.com/eggert/tz
+
+
+
+
+# Detailed dates issues
+https://toastui.medium.com/handling-time-zone-in-javascript-547e67aa842d
+
+
+# Pays liés à une TZ
+https://en.wikipedia.org/wiki/UTC+09:00
+
+
+
+# https://maggiepint.com/category/date-proposal/
+
+# Github temporal
+https://github.com/tc39/proposal-temporal
+
+
+
+1. Gestion du temps
+2. JS Date API => relou !!!
+3. Les libs, oui, du standard, ouiiiiiiiiiiiiiiiiiiiiiii !!!
+4. statut temporal API
+5. polyfill dispos
+6. Temporal API - Archi globale
+https://tc39.es/proposal-temporal/docs/
+=> associés avec calendriers
+
+7. Temporal API - ZonedDateTime
+
+=> chinese calendar
+
+8. Temporal API - PlainDateTime
+9. Temporal API - Durations
+Calcul entre sessions js sophia
+
+
 -->
 
 ---
