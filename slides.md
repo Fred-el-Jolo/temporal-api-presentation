@@ -103,7 +103,7 @@ transition: fade-out
 
 Afin de garder une consistence entre les deux, UTC a été introduite.
 
-Il suffit alors d'ajouter / de supprimer des <span v-mark.highlight.orange="4">"secondes intercalaires"</span> au TAI pour rester à moins de 0.9s de UT1.
+Il suffit alors d'ajouter / de supprimer des <span v-mark="{color: '#ffa31a', type: 'highlight', at: '4'}">"secondes intercalaires"</span> au TAI pour rester à moins de 0.9s de UT1.
 
 </v-click>
 <v-click at="5">
@@ -447,10 +447,9 @@ const jsSophia12 = Temporal.ZonedDateTime.from("2023-06-15T18:17:43[Europe/Paris
 const jsSophia13 = Temporal.ZonedDateTime.from("2025-04-22T18:30:00[Europe/Paris]");
 
 const jsSophia14 = jsSophia13.add(Temporal.Duration.from({months: 2}));
-
-console.log(jsSophia13.since(jsSophia12)/*.toLocaleString()*/);
-
 //console.log(jsSophia14);
+
+//console.log(jsSophia13.since(jsSophia12)/*.toLocaleString()*/);
 //console.log(jsSophia13.since(jsSophia12).round({smallestUnit: 'second'}).toLocaleString());
 
 ```
@@ -490,10 +489,6 @@ console.log(heureMeeting);
 
 <!--
 const heureMeetingParis = heureMeeting.toZonedDateTime('Europe/Paris');
-
-const heureMeetingNY = heureMeetingParis.withTimeZone('America/New_York');
-
-const heureMeetingUTC = heureMeetingParis.toInstant();
 -->
 
 
@@ -509,10 +504,9 @@ import { Temporal } from 'temporal-polyfill';
 const heureMeeting = Temporal.PlainDateTime.from("2023-06-15T10:00:00");
 const heureMeetingParis = heureMeeting.toZonedDateTime('Europe/Paris');
 
-//const heureMeetingNY = heureMeetingParis;   // Use `with*` methods to change date components
+//const heureMeetingNY = heureMeetingParis;
 
-//const heureMeetingUTC = heureMeetingParis;  // toInstant() returns an UTC date representing
-                                              // an unique point in time
+//const heureMeetingUTC = heureMeetingParis;
 
 console.log(heureMeeting);
 //console.log('Paris', heureMeetingParis);
@@ -565,6 +559,8 @@ import { Temporal } from 'temporal-polyfill';
 
 const newDate = Temporal.ZonedDateTime.from("2025-04-22T18:30:00[Europe/Paris]");
 
+//const gregorianDate = Temporal.Now.zonedDateTimeISO();
+//const chineseDate = gregorianDate.withCalendar("chinese");
 
 console.log(newDate);
 
@@ -734,7 +730,7 @@ https://tc39.es/proposal-temporal/docs/calendar-review.html
 
 -->
 
-<div class="abs-b m-6 text-sm">
+<div class="abs-b m-6 text-sm dark">
 <PoweredBySlidev mt-10 />
 </div>
 
