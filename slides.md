@@ -3,7 +3,7 @@
 theme: ./theme
 # random image from a curated Unsplash collection by Anthony
 # like them? see https://unsplash.com/collections/94734566/slidev
-background: https://cover.sli.dev
+background: /intro.jpg
 # some information about your slides (markdown enabled)
 title: Temporal ... now !!!
 #info: |
@@ -31,12 +31,6 @@ La gestion des dates du futur... sans attendre !!!
   <a href="https://www.linkedin.com/in/fredericguillaume/" target="_blank" class="slidev-icon-btn">
     <carbon:logo-linkedin />
   </a>
-</div>
-
-<div class="abs-br m-6 text-xl">
-  <button @click="$slidev.nav.openInEditor" title="Open in Editor" class="slidev-icon-btn">
-    <carbon:edit />
-  </button>
 </div>
 
 <!--
@@ -729,6 +723,8 @@ https://tc39.es/proposal-temporal/docs/calendar-review.html
 - dev burden (i18n require platform & library support)
 
 -->
+
+<img class="m-auto max-w-5/10" src="/end.jpg" />
 
 <div class="abs-b m-6 text-sm dark">
 <PoweredBySlidev mt-10 />
